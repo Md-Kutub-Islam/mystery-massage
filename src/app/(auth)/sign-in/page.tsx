@@ -69,7 +69,7 @@ function page() {
     if (result?.url) {
       console.log("sign-in:", result); // i have to check what it is return
       setIsSubmitting(true);
-      router.replace("/dashboard");
+      router.replace("/profile");
     }
   };
 

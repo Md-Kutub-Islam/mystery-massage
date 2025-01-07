@@ -38,10 +38,12 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
     });
     onMessageDelete(message._id);
   };
+  console.log("typeof", message._id);
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
+        <CardTitle>Feedback</CardTitle>
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="destructive">
@@ -66,7 +68,7 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
         </AlertDialog>
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
-      <CardContent></CardContent>
+      <CardContent>{message.content}</CardContent>
     </Card>
   );
 }

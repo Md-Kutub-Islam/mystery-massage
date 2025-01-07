@@ -11,9 +11,15 @@ import {
 import messages from "@/messages.json";
 import Autoplay from "embla-carousel-autoplay";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSession } from "next-auth/react";
+import { User } from "next-auth";
 import { Mail } from "lucide-react";
+// import { User } from "@/model/User";
 
 function Home() {
+  const { data: session } = useSession();
+
+  const { email } = session?.user as User;
   return (
     <>
       {/* Main content */}
@@ -21,6 +27,7 @@ function Home() {
         <section className="text-center mb-8 md:mb-12">
           <h1 className="text-3xl md:text-5xl font-bold">
             Dive into the World of Anonymous Feedback
+            {email && email}
           </h1>
           <p className="mt-3 md:mt-4 text-base md:text-lg">
             True Feedback - Where your identity remains a secret.

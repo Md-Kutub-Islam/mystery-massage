@@ -14,7 +14,9 @@ export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
   const user: User = session?.user as User;
 
-  if (!session || !session.user) {
+  if (!session) {
+    console.log("world");
+
     return Response.json(
       {
         success: false,
@@ -25,14 +27,14 @@ export async function GET(request: Request) {
   }
 
   // if the user id type is string so some time it create a problem specialy when we write a aggregarate pipeline because it accept the object. so first we have to convet the type of string to object
-  const userId = new mongoose.Types.ObjectId(user._id);
+  const userId = new mongoose.Types.ObjectId(session.user._id);
 
   try {
     const user = await UserModel.aggregate([
-      { $match: { id: userId } },
-      { $unwind: "$messages" },
-      { $sort: { "messages.createdAt": -1 } },
-      { $group: { _id: "$_id", message: { $push: "messages" } } },
+      { $match: { _id: userId } },
+      { $unwind: "$message" },
+      { $sort: { "message.createdAt": -1 } },
+      { $group: { _id: "$_id", message: { $push: "$message" } } },
     ]);
 
     if (!user || !user.length) {
@@ -48,7 +50,7 @@ export async function GET(request: Request) {
     return Response.json(
       {
         success: true,
-        message: user[0].messages,
+        messages: user[0].message,
       },
       { status: 200 }
     );

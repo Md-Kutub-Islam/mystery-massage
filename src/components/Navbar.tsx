@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { User } from "next-auth";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 function Navbar() {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const user: User = session?.user as User; // here the one question is arise we use session insted of data to user data. we use this because in the next auth docs, this is the way to acess the userdata
   return (
@@ -21,7 +23,13 @@ function Navbar() {
             <span className=" mr-4">
               Welcome, {user?.username || user?.email}
             </span>
-            <Button className=" w-full md:w-auto" onClick={() => signOut()}>
+            <Button
+              className=" w-full md:w-auto"
+              onClick={() => {
+                signOut();
+                router.replace("/sign-in");
+              }}
+            >
               Logout
             </Button>
           </>
